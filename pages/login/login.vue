@@ -13,7 +13,7 @@
 		</view>
 		<view class="login-bottom">
 			<view class="bottom-content">
-				<view class="bottom-login-LoginBut" @click="text()">
+				<view class="bottom-login-LoginBut" @click="toAccountLogin()">
 					<view class="button-logo">
 						<img src="/static/image/phoneIcon.png" alt="" />
 					</view>
@@ -21,7 +21,7 @@
 						<text>账号登录</text>
 					</view>
 				</view>
-				<view class="bottom-login-LoginBut smsBut" style="margin-top: 15px;">
+				<view class="bottom-login-LoginBut smsBut" style="margin-top: 15px;" @click="toSmsLogin()">
 					<view class="button-logo">
 						<img src="/static/image/smsIcon.png" />
 					</view>
@@ -42,8 +42,16 @@
 			}
 		},
 		methods: {
-			text() {
-				alert("hello")
+			toAccountLogin() {
+				uni.navigateTo({
+					url: '/pages/accountLogin/accountLogin'
+				})
+			},
+			toSmsLogin() {
+				uni.showToast({
+					title: '正在开发中',
+					icon: 'none'
+				})
 			}
 		}
 	}
