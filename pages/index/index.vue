@@ -7,10 +7,19 @@
 			<view class="index-top-statistics">
 				<view class="statistics-top">
 					<view class="statistics-top-left">
-
+						<view class="statistics-date">
+							
+							<text>本月支出({2025年1月})</text>
+						</view>
+						<view class="statistics-expense">
+							
+						</view>
+						<view class="statistics-netIncomeAndIncome">
+							
+						</view>
 					</view>
 					<view class="statistics-top-right">
-
+						<image  src="../../static/image/pig_1.jpg" style="height: 100px; width: 100px;"></image>
 					</view>
 				</view>
 				<view class="statistics-bottom">
@@ -58,12 +67,12 @@
 			getMonthBill() {
 				const theNowMonth = this.getNowMonth();
 				const data = {
-					'month' : theNowMonth,
-					'pageNo' : this.$data.pageNo,
+					'month': theNowMonth,
+					'pageNo': this.$data.pageNo,
 					'pageSize': this.$data.pageSize
 				}
-				request.post('/bill/getBillByMonth',data,{},true,true,'form').then(rep=>{
-					console.log('rep',rep);
+				request.post('/bill/getBillByMonth', data, {}, true, true, 'form').then(rep => {
+					console.log('rep', rep);
 				})
 			},
 			getNowMonth() {
@@ -79,7 +88,7 @@
 				uni.showToast({
 					title: '点击了悬浮按钮',
 					icon: 'none'
-					
+
 				})
 			},
 		}
@@ -88,7 +97,7 @@
 
 <style scoped>
 	.index-container {
-		height: 100vh;
+		height: calc(100vh - 60px);
 		width: 100%;
 		display: flex;
 		flex-direction: column;
@@ -108,7 +117,7 @@
 	.index-top {
 		flex: 3;
 		display: flex;
-		height: 100%;
+		/* height: 100%; */
 		width: 100%;
 		justify-content: center;
 		align-items: center;
@@ -132,13 +141,32 @@
 
 	.statistics-top-left {
 		display: flex;
-		flex: 5;
-
+		flex: 6;
+		flex-direction: column;
+	}
+	
+	.statistics-date {
+		display: flex;
+		flex: 3;
+		justify-content: center;
+		align-items: center;
+		font-size: 14px;
+		width: 100%;
+	}
+	.statistics-expense {
+		display: flex;
+		flex: 3;
+	}
+	.statistics-netIncomeAndIncome {
+		display: flex;
+		flex: 4;
 	}
 
 	.statistics-top-right {
 		display: flex;
-		flex: 5;
+		flex: 4;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.statistics-bottom {
@@ -150,5 +178,10 @@
 	.index-bil-list {
 		flex: 7;
 		display: flex;
+		flex-direction: column;
+		/* height: 100%;
+		width: 100%;
+		margin-bottom: 60px;
+		overflow: auto; */
 	}
 </style>
