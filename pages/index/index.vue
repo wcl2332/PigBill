@@ -8,18 +8,40 @@
 				<view class="statistics-top">
 					<view class="statistics-top-left">
 						<view class="statistics-date">
-							
-							<text>本月支出({2025年1月})</text>
+							<view class="statistics-date-content">
+								<text>本月支出({{currentMonth}})</text>
+							</view>
 						</view>
 						<view class="statistics-expense">
-							
+							<view class="statistics-expense-content">
+								<view class="testtest">
+									<text>￥{{disburse}}</text>
+								</view>
+							</view>
 						</view>
 						<view class="statistics-netIncomeAndIncome">
-							
+							<view class="statistics-netIncomeAndIncome-content">
+								<view class="statistics-Income-content">
+									<view class="statistics-IncomeAndBlance-title">
+										<text>本月收入</text>
+									</view>
+									<view class="statistics-IncomeAndBlance-text">
+										<text>{{income}}</text>
+									</view>
+								</view>
+								<view class="statistics-balance-content">
+									<view class="statistics-IncomeAndBlance-title">
+										<text>本月结余</text>
+									</view>
+									<view class="statistics-IncomeAndBlance-text">
+										<text>{{balance}}</text>
+									</view>
+								</view>
+							</view>
 						</view>
 					</view>
 					<view class="statistics-top-right">
-						<image  src="../../static/image/pig_1.jpg" style="height: 100px; width: 100px;"></image>
+						<image src="../../static/image/pig_1.jpg" style="height: 100px; width: 100px;"></image>
 					</view>
 				</view>
 				<view class="statistics-bottom">
@@ -53,6 +75,10 @@
 				},
 				pageNo: 1,
 				pageSize: 10,
+				currentMonth: '',
+				disburse: 0.00,
+				income: 0.00,
+				balance: 0.00
 			}
 		},
 		methods: {
@@ -60,8 +86,11 @@
 				const theNowMonth = this.getNowMonth();
 				request.post('/bill/getTotalBillOneMonth', {
 					'month': theNowMonth
-				}, {}, true, true, 'form').then(rep => {
+				}, {}, false, true, 'form').then(rep => {
 					console.log('rep', rep);
+					this.$data.balance=rep.data.netIncome;
+					this.$data.income = rep.data.totalIncome;
+					this.$data.disburse = Math.abs(rep.data.totalExpense);
 				})
 			},
 			getMonthBill() {
@@ -71,7 +100,7 @@
 					'pageNo': this.$data.pageNo,
 					'pageSize': this.$data.pageSize
 				}
-				request.post('/bill/getBillByMonth', data, {}, true, true, 'form').then(rep => {
+				request.post('/bill/getBillByMonth', data, {}, false, true, 'form').then(rep => {
 					console.log('rep', rep);
 				})
 			},
@@ -82,6 +111,7 @@
 				// 如果月份小于 10，前面加 0
 				month = month.toString().padStart(2, '0');
 				const theNowMonth = year + '-' + month;
+				this.$data.currentMonth = year + '年' + month + '月'
 				return theNowMonth;
 			},
 			fabClick() {
@@ -96,6 +126,10 @@
 </script>
 
 <style scoped>
+	@font-face {
+	  font-family: "xiaodoudaoqiurihejianfan"; /* 自定义字体名称 */
+	  src: url("../static/font/xiaodoudaoqiurihejianfan.ttf") format("truetype"); /* 字体文件路径 */
+	}
 	.index-container {
 		height: calc(100vh - 60px);
 		width: 100%;
@@ -135,7 +169,7 @@
 
 	.statistics-top {
 		display: flex;
-		flex: 7;
+		flex: 8;
 		flex-direction: row;
 	}
 
@@ -144,7 +178,7 @@
 		flex: 6;
 		flex-direction: column;
 	}
-	
+
 	.statistics-date {
 		display: flex;
 		flex: 3;
@@ -153,15 +187,75 @@
 		font-size: 14px;
 		width: 100%;
 	}
+
+	.statistics-date-content {
+		display: flex;
+		width: 85%;
+		height: 100%;
+		/* align-items: center; */
+		/* background-color: red; */
+		flex-direction: column;
+		justify-content: flex-end;
+	}
+
+
 	.statistics-expense {
 		display: flex;
 		flex: 3;
+		justify-content: center;
+		align-items: center;
 	}
+	
+	.statistics-expense-content {
+		display: flex;
+		width: 95%;
+		height: 100%;
+		align-items: center;
+		font-family: "xiaodoudaoqiurihejianfan", sans-serif; /* 使用自定义字体 */
+		/* background-color: red; */
+		font-size: 40px;
+		font-weight: bold;
+		text-indent: 0;
+	}
+
 	.statistics-netIncomeAndIncome {
 		display: flex;
 		flex: 4;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
 	}
-
+	
+	.statistics-netIncomeAndIncome-content {
+		width: 85%;
+		height: 100%;
+		display: flex;
+		/* align-items: center; */
+		flex-direction: row;
+	}
+	.statistics-Income-content {
+		display: flex;
+		flex: 5;
+		flex-direction: column;
+	}
+	.statistics-balance-content {
+		display: flex;
+		flex: 5;
+		flex-direction: column;
+		
+	}
+	.statistics-IncomeAndBlance-title {
+		display: flex;
+		flex: 3;
+		font-size: 12px;
+	}
+	.statistics-IncomeAndBlance-text {
+		display: flex;
+		flex: 7;
+		font-family: "xiaodoudaoqiurihejianfan", sans-serif; /* 使用自定义字体 */
+		font-size: 20px;
+	}
+	
 	.statistics-top-right {
 		display: flex;
 		flex: 4;
@@ -171,8 +265,9 @@
 
 	.statistics-bottom {
 		display: flex;
-		flex: 3;
-		/* background-color: rgb(204,225,255) ; */
+		flex: 2;
+		background-color: rgb(204,225,255) ;
+		 border-radius: 0 0 15px 15px;
 	}
 
 	.index-bil-list {
@@ -184,4 +279,6 @@
 		margin-bottom: 60px;
 		overflow: auto; */
 	}
+
+	
 </style>
