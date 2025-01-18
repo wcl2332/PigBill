@@ -50,206 +50,30 @@
 			</view>
 		</view>
 		<view class="index-bill-list">
-			<view class="bill-list-content">
+			<view class="bill-list-content" v-for="(records,date) in billListByDate" :key="date">
 				<view class="bill-list-content-title">
-					<text>01-17 星期五</text>
+					<text>{{date}}</text>
 				</view>
 				<view class="bill-list-content-info">
-					<view class="bill-list-content-item">
+					<view class="bill-list-content-item" v-for="bill in records" :key="bill.id">
 						<view class="bill-list-item-icon">
-							<uni-icons type="notification" size="30px" ></uni-icons>
+							<!-- <uni-icons  custom-prefix="iconfont" type="icon-_xican" size="30px"></uni-icons> -->
+							<text :class="[bill.billCategory.icon]"></text>
 						</view>
 						<view class="bill-list-item-info">
 							<view class="list-item-info-top">
-								<text>出行</text>
+								<text>{{ bill.billCategory.categoryName }}</text>
 							</view>
 							<view class="list-item-info-bottom">
-								<text>火车</text>
+								<text>{{ bill.billTag.tagName }}</text>&nbsp;&nbsp;&nbsp;<text>{{ bill.remark }}</text>
 							</view>
 						</view>
 						<view class="bill-list-item-amount">
-							<text>￥100.10</text>
+							<text>￥{{ bill.amount }}</text>
 						</view>
 					</view>
-					
-					
-					<view class="bill-list-content-item">
-						<view class="bill-list-item-icon">
-							<uni-icons type="notification" size="30px" ></uni-icons>
-						</view>
-						<view class="bill-list-item-info">
-							<view class="list-item-info-top">
-								<text>餐饮</text>
-							</view>
-							<view class="list-item-info-bottom">
-								<text>早餐</text>
-							</view>
-						</view>
-						<view class="bill-list-item-amount">
-							<text>￥100.10</text>
-						</view>
-					</view>
-					
-					
 				</view>
 			</view>
-			
-			
-			
-			<view class="bill-list-content">
-				<view class="bill-list-content-title">
-					<text>01-17 星期五</text>
-				</view>
-				<view class="bill-list-content-info">
-					<view class="bill-list-content-item">
-						<view class="bill-list-item-icon">
-							<uni-icons type="notification" size="30px" ></uni-icons>
-						</view>
-						<view class="bill-list-item-info">
-							<view class="list-item-info-top">
-								<text>出行</text>
-							</view>
-							<view class="list-item-info-bottom">
-								<text>火车</text>
-							</view>
-						</view>
-						<view class="bill-list-item-amount">
-							<text>￥100.10</text>
-						</view>
-					</view>
-					
-					
-					<view class="bill-list-content-item">
-						<view class="bill-list-item-icon">
-							<uni-icons type="notification" size="30px" ></uni-icons>
-						</view>
-						<view class="bill-list-item-info">
-							<view class="list-item-info-top">
-								<text>餐饮</text>
-							</view>
-							<view class="list-item-info-bottom">
-								<text>早餐</text>
-							</view>
-						</view>
-						<view class="bill-list-item-amount">
-							<text>￥100.10</text>
-						</view>
-					</view>
-					
-					
-				</view>
-			</view>
-			
-			
-			<view class="bill-list-content">
-				<view class="bill-list-content-title">
-					<text>01-17 星期五</text>
-				</view>
-				<view class="bill-list-content-info">
-					<view class="bill-list-content-item">
-						<view class="bill-list-item-icon">
-							<uni-icons type="notification" size="30px" ></uni-icons>
-						</view>
-						<view class="bill-list-item-info">
-							<view class="list-item-info-top">
-								<text>出行</text>
-							</view>
-							<view class="list-item-info-bottom">
-								<text>火车</text>
-							</view>
-						</view>
-						<view class="bill-list-item-amount">
-							<text>￥100.10</text>
-						</view>
-					</view>
-					
-					
-					<view class="bill-list-content-item">
-						<view class="bill-list-item-icon">
-							<uni-icons type="notification" size="30px" ></uni-icons>
-						</view>
-						<view class="bill-list-item-info">
-							<view class="list-item-info-top">
-								<text>餐饮</text>
-							</view>
-							<view class="list-item-info-bottom">
-								<text>早餐</text>
-							</view>
-						</view>
-						<view class="bill-list-item-amount">
-							<text>￥100.10</text>
-						</view>
-					</view>
-					
-					
-				</view>
-			</view>
-			
-			
-			<view class="bill-list-content">
-				<view class="bill-list-content-title">
-					<text>01-17 星期五</text>
-				</view>
-				<view class="bill-list-content-info">
-					<view class="bill-list-content-item">
-						<view class="bill-list-item-icon">
-							<uni-icons type="notification" size="30px" ></uni-icons>
-						</view>
-						<view class="bill-list-item-info">
-							<view class="list-item-info-top">
-								<text>出行</text>
-							</view>
-							<view class="list-item-info-bottom">
-								<text>火车</text>
-							</view>
-						</view>
-						<view class="bill-list-item-amount">
-							<text>￥100.10</text>
-						</view>
-					</view>
-					
-					
-					<view class="bill-list-content-item">
-						<view class="bill-list-item-icon">
-							<uni-icons type="notification" size="30px" ></uni-icons>
-						</view>
-						<view class="bill-list-item-info">
-							<view class="list-item-info-top">
-								<text>餐饮</text>
-							</view>
-							<view class="list-item-info-bottom">
-								<text>早餐</text>
-							</view>
-						</view>
-						<view class="bill-list-item-amount">
-							<text>￥100.10</text>
-						</view>
-					</view>
-					
-					
-				</view>
-			</view>
-			
-			
-			
-<!-- 			<view class="bill-list-content">
-				<view class="bill-list-content-title">
-					<text>01-17 星期五</text>
-				</view>
-				<view class="bill-list-content-info">
-					<view class="bill-list-content-item">
-						<view class="bill-list-item-icon">
-			
-						</view>
-						<view class="bill-list-item-info">
-			
-						</view>
-						<view class="bill-list-item-amount">
-			
-						</view>
-					</view>
-				</view>
-			</view> -->
 		</view>
 		<uni-fab :pattern="pattern" :horizontal="horizontal" :vertical="vertical" @fabClick="fabClick">
 		</uni-fab>
@@ -272,11 +96,12 @@
 					buttonColor: '#007AFF',
 				},
 				pageNo: 1,
-				pageSize: 10,
+				pageSize: 50,
 				currentMonth: '',
 				disburse: 0.00,
 				income: 0.00,
-				balance: 0.00
+				balance: 0.00,
+				billListByDate: {}
 			}
 		},
 		methods: {
@@ -299,8 +124,18 @@
 					'pageSize': this.$data.pageSize
 				}
 				request.post('/bill/getBillByMonth', data, {}, false, true, 'form').then(rep => {
-					console.log('rep', rep);
+					this.$data.billListByDate = rep.data.records.reduce((result, record) => {
+						const date = record.date;
+						// 如果日期不存在，初始化一个空数组
+						if (!result[date]) {
+							result[date] = [];
+						}
+						// 将当前记录添加到对应日期的数组中
+						result[date].push(record);
+						return result;
+					}, {});
 				})
+				console.log('billListByDate', this.$data.billListByDate)
 			},
 			getNowMonth() {
 				const now = new Date();
@@ -313,17 +148,20 @@
 				return theNowMonth;
 			},
 			fabClick() {
-				uni.showToast({
-					title: '点击了悬浮按钮',
-					icon: 'none'
-
+				uni.navigateTo({
+					url:'/pages/addBill/addBill'
 				})
 			},
+		},
+		onReachBottom() {
+			console.log('已经滑动到底部')
 		}
 	}
 </script>
 
 <style scoped>
+	@import "@/static/iconfont-webapp-icon.css";
+
 	@font-face {
 		font-family: "xiaodoudaoqiurihejianfan";
 		/* 自定义字体名称 */
@@ -363,7 +201,8 @@
 		width: 90%;
 		height: 100%;
 		/* border: 1px solid red; */
-		background-color: rgb(242, 246, 255);
+		/* background-color: rgb(242, 246, 255); */
+		background-color: white;
 		border-radius: 15px;
 		flex-direction: column;
 	}
@@ -486,6 +325,7 @@
 		align-items: center;
 		padding-top: 20px;
 		overflow: scroll;
+		padding-bottom: 20px;
 	}
 
 	.bill-list-content {
@@ -524,6 +364,11 @@
 		/* background-color: red; */
 		width: 95%;
 		/* margin-bottom: 10px; */
+		border-bottom: 0.5px solid rgb(244, 244, 244);
+	}
+
+	.bill-list-content-item:last-child {
+		border-bottom: none;
 	}
 
 	.bill-list-item-icon {
@@ -538,21 +383,25 @@
 		flex: 6;
 		flex-direction: column;
 	}
+
 	.list-item-info-top {
 		display: flex;
 		flex: 6;
 		align-items: center;
-		font-size: 22px;
+		font-size: 20px;
 		padding-left: 10px;
 		font-weight: bold;
 		/* font-family: "xiaodoudaoqiurihejianfan", sans-serif; */
 	}
+
 	.list-item-info-bottom {
 		display: flex;
 		flex: 4;
 		padding-left: 10px;
-		color: rgb(150,150,150);
-		font-size: 12px;
+		color: rgb(150, 150, 150);
+		font-size: 13px;
+		/* justify-content: center; */
+		align-items: center;
 	}
 
 	.bill-list-item-amount {
@@ -561,7 +410,7 @@
 		justify-content: center;
 		align-items: center;
 		font-family: "xiaodoudaoqiurihejianfan", sans-serif;
-		font-size: 20px;
+		font-size: 22px;
 		font-weight: bold;
 	}
 </style>
