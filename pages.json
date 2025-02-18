@@ -1,6 +1,14 @@
 {
 	"pages": [
 		{
+			"path" : "pages/addBill/addBill",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "",
@@ -30,14 +38,6 @@
 		},
 		{
 			"path" : "pages/accountLogin/accountLogin",
-			"style" : 
-			{
-				"navigationBarTitleText" : "",
-				"enablePullDownRefresh" : false
-			}
-		},
-		{
-			"path" : "pages/addBill/addBill",
 			"style" : 
 			{
 				"navigationBarTitleText" : "",

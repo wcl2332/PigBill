@@ -149,7 +149,7 @@
 			},
 			fabClick() {
 				uni.navigateTo({
-					url:'/pages/addBill/addBill'
+					url:'../pages/addBill/addBill'
 				})
 			},
 		},
