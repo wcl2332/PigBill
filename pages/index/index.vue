@@ -1,8 +1,34 @@
 <template>
 	<view class="index-container">
-		<view class="index-title">
-
+		<view class="user-header">
+			<view class="header-content">
+				<text class="month-title">
+					<text class="month-title" style="font-family: 'xiaodoudaoqiurihejianfan', sans-serif; font-size: 35px; font-weight: 500;">小猪记账</text>
+				</text>
+				<view class="avatar-group">
+					<view class="avatar-wrapper" :class="{'active': activeUser === 'self'}" @click="switchUser('self')">
+						<image class="user-avatar" :src="userInfo.avatar || '../../static/image/default-avatar.png'" />
+						<text class="user-name">{{userInfo.name || '我'}}</text>
+					</view>
+					<view v-if="partnerInfo" class="partner-divider">|</view>
+					<view v-if="partnerInfo" class="avatar-wrapper" :class="{'active': activeUser === 'partner'}"
+						@click="switchUser('partner')">
+						<image class="user-avatar"
+							:src="partnerInfo.avatar || '../../static/image/default-avatar.png'" />
+						<text class="user-name">{{partnerInfo.name || '伴侣'}}</text>
+					</view>
+				</view>
+			</view>
 		</view>
+		<!-- 		<view class="index-title">
+			<view class="user-switcher">
+				<image class="user-avatar" :class="{'active-user': activeUser === 'self'}"
+					:src="userInfo.avatar || '../../static/image/default-avatar.jpg'" @click="switchUser('self')" />
+				<image v-if="partnerInfo" class="user-avatar" :class="{'active-user': activeUser === 'partner'}"
+					:src="partnerInfo.avatar || '../../static/image/default-avatar.jpg'"
+					@click="switchUser('partner')" />
+			</view>
+		</view> -->
 		<view class="index-top">
 			<view class="index-top-statistics">
 				<view class="statistics-top">
@@ -84,12 +110,19 @@
 	import request from '@/utils/requst.js';
 	export default {
 		onShow() {
+			this.fetchUserInfo();
 			//获取当前月份的总支出等
 			this.billToatlOneMon();
 			this.getMonthBill();
 		},
 		data() {
 			return {
+				// 新增用户相关数据
+				userInfo: {},
+				partnerInfo: null,
+				activeUser: 'self',
+				currentUserId: '',
+
 				vertical: 'bottom',
 				horizontal: 'right',
 				pattern: {
@@ -105,10 +138,55 @@
 			}
 		},
 		methods: {
+			// 新增用户切换方法
+			switchUser(type) {
+				this.activeUser = type;
+				const userId = type === 'self' ? this.userInfo.id : this.partnerInfo?.id;
+				if (userId) {
+					this.currentUserId = userId;
+					this.billToatlOneMon();
+					this.getMonthBill();
+				}
+			},
+
+			// 新增获取用户信息方法
+			async fetchUserInfo() {
+				// try {
+				// 	const res = await request.get('/user/getCurrentUser');
+				// 	this.userInfo = res.data;
+				// 	this.currentUserId = res.data.id;
+
+				// 	if (res.data.partnerId) {
+				// 		const partnerRes = await request.get(`/user/getUserById?id=${res.data.partnerId}`);
+				// 		this.partnerInfo = partnerRes.data;
+				// 	}
+				// } catch (error) {
+				// 	console.error('获取用户信息失败:', error);
+				// }
+				// 模拟用户数据
+				this.userInfo = {
+					id: 1001,
+					name: "用户",
+					avatar: "../../static/image/default-avatar.jpg",
+					partnerId: 1002
+				};
+
+				// 模拟伴侣数据
+				this.partnerInfo = {
+					id: 1002,
+					name: "伴侣",
+					avatar: "../../static/image/default-avatar.jpg"
+				};
+
+				this.currentUserId = this.userInfo.id;
+			},
+
+
 			billToatlOneMon() {
 				const theNowMonth = this.getNowMonth();
 				request.post('/bill/getTotalBillOneMonth', {
-					'month': theNowMonth
+					'month': theNowMonth,
+					'userId': this.currentUserId
 				}, {}, false, true, 'form').then(rep => {
 					console.log('rep', rep);
 					this.$data.balance = rep.data.netIncome;
@@ -121,7 +199,8 @@
 				const data = {
 					'month': theNowMonth,
 					'pageNo': this.$data.pageNo,
-					'pageSize': this.$data.pageSize
+					'pageSize': this.$data.pageSize,
+					'userId': this.currentUserId
 				}
 				request.post('/bill/getBillByMonth', data, {}, false, true, 'form').then(rep => {
 					this.$data.billListByDate = rep.data.records.reduce((result, record) => {
@@ -149,7 +228,7 @@
 			},
 			fabClick() {
 				uni.navigateTo({
-					url:'../pages/addBill/addBill'
+					url: '../pages/addBill/addBill'
 				})
 			},
 		},
@@ -168,6 +247,89 @@
 		src: url("../static/font/xiaodoudaoqiurihejianfan.ttf") format("truetype");
 		/* 字体文件路径 */
 	}
+
+
+	/* 头部样式 */
+	.user-header {
+		padding: 15px 20px;
+		background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+		border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+		margin-bottom: 20px;
+	}
+
+	.header-content {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.month-title {
+		font-size: 18px;
+		color: #2c3e50;
+		font-weight: 500;
+		letter-spacing: 0.5px;
+	}
+
+	.avatar-group {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.avatar-wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 6px;
+		border-radius: 12px;
+		transition: all 0.25s ease;
+		position: relative;
+	}
+
+	.avatar-wrapper.active {
+		background: rgba(0, 122, 255, 0.1);
+	}
+
+	.avatar-wrapper.active::after {
+		content: "";
+		position: absolute;
+		bottom: -8px;
+		width: 60%;
+		height: 2px;
+		background: #007AFF;
+		border-radius: 2px;
+	}
+
+	.user-avatar {
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		margin-bottom: 4px;
+		border: 1.5px solid #fff;
+	}
+
+	.user-name {
+		font-size: 12px;
+		color: #7f8c8d;
+		letter-spacing: 0.3px;
+	}
+
+	.avatar-wrapper.active .user-name {
+		color: #007AFF;
+		font-weight: 500;
+	}
+
+	.partner-divider {
+		color: #bdc3c7;
+		font-weight: 300;
+		transform: scale(0.8);
+	}
+
+
+
+
+
 
 	.index-container {
 		height: calc(100vh - 60px);
@@ -413,4 +575,28 @@
 		font-size: 22px;
 		font-weight: bold;
 	}
+
+
+
+	/* 新增用户切换样式 */
+	/* 	.user-switcher {
+		display: flex;
+		align-items: center;
+		padding: 10px 15px;
+		gap: 15px;
+	}
+
+	.user-avatar {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		border: 2px solid #fff;
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+		transition: all 0.3s ease;
+	}
+
+	.user-avatar.active-user {
+		border: 2px solid #007AFF;
+		transform: scale(1.1);
+	} */
 </style>
